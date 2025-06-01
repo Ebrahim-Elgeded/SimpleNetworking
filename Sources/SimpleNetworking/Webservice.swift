@@ -7,15 +7,18 @@
 
 import Foundation
 
-enum NetworkError: Error {
+public enum NetworkError: Error {
     case badrequest
     case decodingError
 }
 
-class Webservice {
-    
-    func fetch<T: Codable>(url: URL, parse: @escaping (Data)->T, completion: @escaping (Result<T, NetworkError>)->Void){
-        URLSession.shared.dataTask(with: url) { data,response,error in
+public class Webservice {
+    public init(){
+        
+    }
+    public func fetch<T: Codable>(url: URL, parse: @Sendable @escaping (Data) -> T,
+                           completion: @Sendable @escaping (Result<T?, NetworkError>) -> Void){
+        URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil,
             (response as? HTTPURLResponse)?.statusCode == 200
             else {
